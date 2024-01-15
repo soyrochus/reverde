@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "reverde"
+version = "0.1.0"
+description = "LLM based, multimodal, conversion tool; transformation of the old to the new"
+authors = ["Iwan van der Kleijn <iwanvanderkleijn@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+openai = "^1.6.1"
+load-dotenv = "^0.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
