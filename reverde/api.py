@@ -9,21 +9,16 @@ import base64
 import mimetypes
 from pathlib import Path
 from openai import OpenAI, OpenAIError 
+
+from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_openai import ChatOpenAI
+
 from load_dotenv import load_dotenv #type: ignore
 import os
 
-try:
-    #set the key from file "openai_key.txt" in the same directory as this file or set the environment variable OPENAI_API_KEY
-    load_dotenv("openai_api_key.env")
-    client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
-except OpenAIError as e:
-    print(e)
-    exit(1) 
+#set the key from file "openai_key.txt" in the same directory as this file or set the environment variable OPENAI_API_KEY
+load_dotenv("openai_api_key.env")
 
-
-# def encode_image(image_path: Path) -> str:
-#   with open(image_path, "rb") as image_file:
-#     return base64.b64encode(image_file.read()).decode('utf-8')
 
 def encode_image_data_url(image_path):
     mime_type, _ = mimetypes.guess_type(image_path)
@@ -35,27 +30,30 @@ def encode_image_data_url(image_path):
     
     return f"data:{mime_type};base64,{encoded_string}"
 
+
 def prompt_for_image(prompt:str, image_path: Path, max_tokens = 3000) -> str:
-    
+    """
+    Prompt for image using OpenAI API
+    See: https://github.com/langchain-ai/langchain/blob/master/cookbook/openai_v1_cookbook.ipynb
+    """
     data_url = encode_image_data_url(image_path)
-    response = client.chat.completions.create(
-        model="gpt-4-vision-preview",
-        messages=[
-            {
-            "role": "user",
-            "content": [
+    
+    chat = ChatOpenAI(model="gpt-4-vision-preview", max_tokens=max_tokens)
+    response = chat.invoke(
+    [
+        HumanMessage(
+            content=[
                 {"type": "text", "text": prompt},
                 {
-                "type": "image_url",
-                "image_url": {
-                    "url": data_url
-                },
-                },
-            ],
-            }
-        ],
-        max_tokens=max_tokens,
+                    "type": "image_url",
+                    "image_url": {
+                        "url": data_url,
+                        "detail": "auto",
+                            },
+                        },
+                    ]
+                )
+            ]
         )
+    return response.content #type: ignore
 
-    message : str =  response.choices[0].message.content #type: ignore
-    return  message
