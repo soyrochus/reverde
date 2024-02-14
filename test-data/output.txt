@@ -1,0 +1,36 @@
+
+Administrator in reverde on  pdf-images [✘!?] is 📦 v0.1.0 via 🐍 v3.11.7 (reverde-py3.11) took 1m43s
+❯  d:; cd 'd:\src\reverde'; & 'c:\Users\ivanderk\AppData\Local\pypoetry\Cache\virtualenvs\reverde--O9zIyKI-py3.11\Scripts\python.exe' 'C:\Users\ivanderk\scoop\persist\vscode\data\extensions\ms-python.debugpy-2024.0.0-win32-x64\bundled\libs\debugpy\adapter/../..\debugpy\launcher' '58172' '--' '-m' 'reverde' '-c' 'vb' '-i' 'test-data/vb6-example-form.png' '-o' 'test-data'
+Based on the fields visible in the VB6 form, we can create an equivalent JHipster Data Language (JDL) entity definition. Here's an example of what the JDL entity for "Customer" might look like:
+
+```jdl
+entity Customer {
+    customerId String required,
+    companyName String required,
+    contactName String,
+    contactTitle String,
+    address String,
+    city String,
+    region String,
+    postalCode String,
+    country String,
+    phone String,
+    fax String
+}
+
+dto Customer with mapstruct
+service Customer with serviceClass
+pagination Customer with pagination
+```
+
+This JDL definition assumes the following:
+
+- `customerId` and `companyName` fields are required.
+- Data transfer objects (DTOs) will be used with MapStruct for mapping domain objects and Data Transfer Objects.
+- Service class will be generated for the entity.
+- Pagination will be enabled for the entity.
+
+You would need to adjust the types and constraints as per your specific requirements and database design, especially considering the appropriate data types for fields like `phone`, `fax`, and `postalCode`, which might not be plain strings depending on your validation rules. Also, if `customerId` is meant to be a unique identifier, you might want to ensure it's marked as such in your database schema.
+
+Administrator in reverde on  pdf-images [✘!?] is 📦 v0.1.0 via 🐍 v3.11.7 (reverde-py3.11) took 19s
+❯

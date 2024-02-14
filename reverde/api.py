@@ -20,6 +20,20 @@ import os
 load_dotenv("openai_api_key.env")
 
 
+def send_prompt(prompt:str, max_tokens = 3000) -> str:
+    """
+    Send prompt using OpenAI API
+    See:
+    """ 
+    chat = ChatOpenAI(model="gpt-4", max_tokens=max_tokens)
+    response = chat.invoke(
+    [
+        HumanMessage(
+            content=[{"type": "text", "text": prompt}]
+        )
+    ])
+    return response.content #type: ignore
+
 def encode_image_data_url(image_path):
     mime_type, _ = mimetypes.guess_type(image_path)
     if mime_type is None:
